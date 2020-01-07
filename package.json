@@ -1,6 +1,6 @@
 {
-  "name": "TODO",
-  "description": "TODO",
+  "name": "static-publishing",
+  "description": "Publishing platform for statically generated websites",
   "version": "0.0.1",
   "scripts": {
     "dev": "sapper dev",
@@ -28,6 +28,8 @@
     "@rollup/plugin-commonjs": "^11.0.0",
     "@rollup/plugin-node-resolve": "^6.0.0",
     "@rollup/plugin-replace": "^2.2.0",
+    "array.prototype.flat": "^1.2.3",
+    "array.prototype.flatmap": "^1.2.3",
     "autoprefixer": "^9.7.3",
     "cssnano": "^4.1.10",
     "eslint-config-google": "^0.14.0",
