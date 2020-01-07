@@ -14,9 +14,10 @@
   import '../../styles/quill-editor.css';
   import 'highlight.js/styles/atom-one-dark.css';
 
+  export let title = '';
   export let body = 'Hello World!';
 
-  import qq from 'quill/';
+  $: console.log(body);
 
   let editorElement;
   let editor;
@@ -341,6 +342,13 @@
     rel="stylesheet"
     href="//fonts.googleapis.com/css?family=Karla|Merriweather:400,700,900" />
 </svelte:head>
+<div class="p-4">
+  <input
+    type="text"
+    placeholder="Title"
+    class="w-full outline-none border-0 bg-transparent font-serif text-5xl
+    text-gray-800" />
+</div>
 <div>
   <div style="position: relative">
     <div id="sidebarControls" class="flex flex-row -mx-12">
@@ -373,7 +381,7 @@
             xmlns="http://www.w3.org/2000/svg"
             width="26"
             viewBox="0 0 24 24"
-            class="">
+            class="secondary fill-current text-gray-800">
             <path
               class="secondary"
               d="M6.59 6l2.7-2.7A1 1 0 0 1 10 3h4a1 1 0 0 1 .7.3L17.42 6H20a2 2
@@ -391,7 +399,7 @@
             xmlns="http://www.w3.org/2000/svg"
             width="26"
             viewBox="0 0 24 24"
-            class="icon-code">
+            class="icon-code fill-current text-gray-800">
             <rect width="18" height="18" x="3" y="3" style="fill:none" rx="2" />
             <path
               class="secondary"
@@ -409,7 +417,7 @@
             xmlns="http://www.w3.org/2000/svg"
             width="26"
             viewBox="0 0 24 24"
-            class="icon-dots-horizontal">
+            class="icon-dots-horizontal fill-current text-gray-800">
             <path
               class="secondary"
               fill-rule="evenodd"
