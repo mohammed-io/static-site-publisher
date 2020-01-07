@@ -17,5 +17,3 @@ polka() // You can also use Express
   .listen(PORT, err => {
     if (err) console.log('error', err);
   });
-
-traverseDir(process.cwd() + '/src/routes').then(console.log);
