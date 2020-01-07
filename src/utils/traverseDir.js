@@ -1,6 +1,10 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
+/**
+ * @param {string} dir
+ * @returns {Promise<string[]>}
+ */
 export async function traverseDir(dir) {
   return fs.readdir(dir).then(files => {
     return Promise.all(
