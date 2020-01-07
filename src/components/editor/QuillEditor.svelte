@@ -46,6 +46,7 @@
       },
       theme: 'bubble',
       scrollingContainer: 'html, body',
+      placeholder: 'Tell your story...'
       // placeholder: this.trans.posts.forms.editor.body,
     });
 
@@ -347,7 +348,7 @@
     type="text"
     placeholder="Title"
     class="w-full outline-none border-0 bg-transparent font-serif text-5xl
-    text-gray-800" />
+    text-gray-800 placeholder-gray-600" />
 </div>
 <div>
   <div style="position: relative">

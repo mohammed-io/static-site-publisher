@@ -93,7 +93,7 @@
 
 .ql-editor.ql-blank::before {
   left: 0;
-  font-style: normal;
+  font-style: normal !important;
 }
 
 .ql-container hr {
