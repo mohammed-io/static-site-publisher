@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import _ from 'lodash';
   import 'highlight.js';
 
@@ -14,15 +14,15 @@
   import '../../styles/quill-editor.css';
   import 'highlight.js/styles/atom-one-dark.css';
 
-  export let title = '';
   export let body = 'Hello World!';
-
-  $: console.log(body);
 
   let editorElement;
   let editor;
+  let sidebarControls;
 
   let areSidebarControlsShown = false;
+
+  const listeners = [];
 
   function createEditor() {
     Quill.register(ImageBlot, true);
@@ -46,7 +46,7 @@
       },
       theme: 'bubble',
       scrollingContainer: 'html, body',
-      placeholder: 'Tell your story...'
+      placeholder: 'Tell your story...',
       // placeholder: this.trans.posts.forms.editor.body,
     });
 
@@ -72,49 +72,54 @@
   }
 
   function handleClicksInsideEditor() {
-    editor.on('click', event => {
-      let blot = Parchment.find(event.target, true);
+    const emitter = editor.on('click', event => {
+      const blot = Parchment.find(event.target, true);
 
       if (blot instanceof ImageBlot) {
-        let values = blot.value(blot.domNode)['captioned-image'];
+        const values = blot.value(blot.domNode)['captioned-image'];
 
         values.existingBlot = blot;
 
         this.showImageModal(values);
       }
     });
+
+    listeners.push(emitter.removeAllListeners);
   }
 
   function initSideControls() {
-    let Block = Quill.import('blots/block');
+    const Block = Quill.import('blots/block');
 
-    editor.on(Quill.events.EDITOR_CHANGE, (eventType, range) => {
-      let sidebarControls = document.getElementById('sidebarControls');
+    const emitter = editor.on(
+      Quill.events.EDITOR_CHANGE,
+      (eventType, range) => {
+        if (eventType !== Quill.events.SELECTION_CHANGE) return;
 
-      if (eventType !== Quill.events.SELECTION_CHANGE) return;
+        if (range == null) return;
 
-      if (range == null) return;
+        if (range.length === 0) {
+          const [block, offset] = editor.scroll.descendant(Block, range.index);
 
-      if (range.length === 0) {
-        let [block, offset] = editor.scroll.descendant(Block, range.index);
+          if (
+            block != null &&
+            block.domNode.firstChild instanceof HTMLBRElement
+          ) {
+            const lineBounds = editor.getBounds(range);
 
-        if (
-          block != null &&
-          block.domNode.firstChild instanceof HTMLBRElement
-        ) {
-          let lineBounds = editor.getBounds(range);
+            sidebarControls.style.display = 'flex';
 
-          sidebarControls.style.display = 'flex';
-
-          // sidebarControls.style.left = lineBounds.left - 50 + 'px';
-          sidebarControls.style.top = lineBounds.top - 2 + 'px';
+            // sidebarControls.style.left = lineBounds.left - 50 + 'px';
+            sidebarControls.style.top = lineBounds.top - 2 + 'px';
+          } else {
+            sidebarControls.style.display = 'none';
+          }
         } else {
           sidebarControls.style.display = 'none';
         }
-      } else {
-        sidebarControls.style.display = 'none';
       }
-    });
+    );
+
+    listeners.push(emitter.removeAllListeners);
   }
 
   function openSidebarControls() {
@@ -123,12 +128,24 @@
     editor.focus();
   }
 
+  function insertDivider() {
+    const range = editor.getSelection(true);
+
+    editor.insertEmbed(range.index, 'divider', true, Quill.sources.USER);
+    editor.insertText(range.index, '\n', Quill.sources.USER);
+    editor.setSelection(range.index + 2, Quill.sources.SILENT);
+  }
+
   onMount(() => {
     editor = createEditor();
 
     handleEditorValue();
     handleClicksInsideEditor();
     initSideControls();
+  });
+
+  onDestroy(() => {
+    listeners.forEach(l => l());
   });
 
   // const foo = {
@@ -338,24 +355,16 @@
   // };
 </script>
 
-<svelte:head>
-  <link
-    rel="stylesheet"
-    href="//fonts.googleapis.com/css?family=Karla|Merriweather:400,700,900" />
-</svelte:head>
-<div class="p-4">
-  <input
-    type="text"
-    placeholder="Title"
-    class="w-full outline-none border-0 bg-transparent font-serif text-5xl
-    text-gray-800 placeholder-gray-600" />
-</div>
 <div>
-  <div style="position: relative">
-    <div id="sidebarControls" class="flex flex-row -mx-12">
+  <div class="relative">
+    <div
+      bind:this={sidebarControls}
+      id="sidebarControls"
+      class="flex flex-row -mx-12">
       <button
         class="flex items-center border border-gray-200 rounded-full p-2 mx-1"
         type="button"
+        tabindex="-1"
         on:click={openSidebarControls}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -370,11 +379,11 @@
         </svg>
       </button>
       <div
-        class="controls"
+        class="controls bg-white"
         class:hidden={!areSidebarControlsShown}
         class:flex={areSidebarControlsShown}>
         <button
-          class="flex items-center border border-gray-200 rounded-full p-2 mx-1
+          class="flex items-center border border-gray-200 rounded-full p-2 mx-2
           bg-white"
           type="button"
           on:click={() => 'showImageModal'}>
@@ -413,7 +422,7 @@
         <button
           class="flex items-center border border-gray-200 rounded-full p-2 mx-1"
           type="button"
-          on:click={() => 'insertDivider'}>
+          on:click={insertDivider}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="26"

@@ -41,15 +41,16 @@
 }
 
 .ql-editor h2 {
-  margin-top: 0 !important;
-  margin-bottom: 33px !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 0;
   font-size: 1.5rem;
   font-weight: bold;
   line-height: 2.6rem;
 }
 
 .ql-editor h3 {
-  margin-bottom: 33px !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 0;
   font-size: 17px !important;
   font-weight: bold;
   line-height: 2.6rem;
@@ -60,7 +61,8 @@
 .ql-editor ul,
 .ql-editor pre,
 .ql-editor blockquote {
-  margin-bottom: 33px !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 0;
 }
 
 .ql-editor blockquote {
@@ -93,11 +95,12 @@
 
 .ql-editor.ql-blank::before {
   left: 0;
+  margin-top: 1.5rem !important;
   font-style: normal !important;
 }
 
 .ql-container hr {
-  margin-top: 0;
+  margin-bottom: 1.5rem;
   border: none;
   letter-spacing: 1em;
   text-align: center;
