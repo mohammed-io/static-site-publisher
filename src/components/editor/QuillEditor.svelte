@@ -72,7 +72,7 @@
   }
 
   function handleClicksInsideEditor() {
-    const emitter = editor.on('click', event => {
+    const handler = event => {
       const blot = Parchment.find(event.target, true);
 
       if (blot instanceof ImageBlot) {
@@ -80,11 +80,12 @@
 
         values.existingBlot = blot;
 
-        this.showImageModal(values);
+        // this.showImageModal(values);
       }
-    });
-
-    listeners.push(emitter.removeAllListeners);
+    }
+    editor.root.addEventListener('click', handler);
+    
+    listeners.push(() => editor.root.removeEventListener('click', handler));
   }
 
   function initSideControls() {
