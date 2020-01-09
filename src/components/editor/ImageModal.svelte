@@ -43,10 +43,10 @@
   <div class="p-2">
     {#if imageBlob}
       <div>
-        <img src={imageBlob} />
+        <img src={imageBlob} alt="uploaded image" />
       </div>
 
-      <div>
+      <div class="py-2">
         <input
           class="w-full outline-none border-0 bg-transparent font-serif
           text-gray-800 placeholder-gray-600"

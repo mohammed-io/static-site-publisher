@@ -7,11 +7,7 @@
 
   const dispatch = createEventDispatcher();
 
-  $: {
-    if (open) {
-      dispatch('open');
-    }
-  }
+  $: open && dispatch('open');
 
   function handleEsc(e) {
     if (e.key !== 'Escape') return;
@@ -106,7 +102,9 @@
             on:click={closeModal}>
             Cancel
           </button>
-          <button class="{confirmClasses} rounded mx-1 px-4 py-2 font-bold">
+          <button
+            class="{confirmClasses} rounded mx-1 px-4 py-2 font-bold"
+            on:click={handleConfirm}>
             Confirm
           </button>
         </div>

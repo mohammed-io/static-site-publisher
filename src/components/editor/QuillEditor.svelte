@@ -140,6 +140,31 @@
     editor.setSelection(range.index + 2, Quill.sources.SILENT);
   }
 
+  function insertImage({ url, caption, existingBlot, layout }) {
+    imageModalOpen = false;
+
+    const values = {
+      url: url,
+      caption: caption,
+      layout: layout,
+    };
+
+    if (existingBlot) {
+      return existingBlot.replaceWith('captioned-image', values);
+    }
+
+    const range = editor.getSelection(true);
+
+    editor.insertEmbed(
+      range.index,
+      'captioned-image',
+      values,
+      Quill.sources.USER
+    );
+
+    editor.setSelection(range.index + 1, Quill.sources.SILENT);
+  }
+
   onMount(() => {
     editor = createEditor();
 
@@ -447,8 +472,6 @@
     <!-- <image-modal ref="imageModal" @addingImage="insertImage" />
 
       <html-modal ref="htmlModal" @addingHTML="insertHTML" /> -->
-    <ImageModal
-      bind:open={imageModalOpen}
-      on:open={() => console.log('open')} />
+    <ImageModal bind:open={imageModalOpen} on:confirm={insertImage} />
   </div>
 </div>
