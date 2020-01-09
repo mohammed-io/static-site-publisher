@@ -10,9 +10,9 @@ const dev = NODE_ENV === 'development';
 
 polka() // You can also use Express
   .use(
-    compression({ threshold: 0 }),
     sirv('static', { dev }),
-    bodyParser.json(),
+    compression({ threshold: 0 }),
+    bodyParser.json({ limit: '50MB' }),
     sapper.middleware({ ignore: dev ? undefined : '/editor' })
   )
   .listen(PORT, err => {
