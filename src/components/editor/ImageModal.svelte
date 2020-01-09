@@ -26,7 +26,7 @@
   }
 
   function sendImage() {
-    dispatch('confirm', { url: imageBlob, caption });
+    dispatch('confirm', { data: imageBlob, caption });
   }
 </script>
 

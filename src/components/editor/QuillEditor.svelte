@@ -76,6 +76,8 @@
 
   function handleClicksInsideEditor() {
     const handler = event => {
+      areSidebarControlsShown = false;
+
       const blot = Parchment.find(event.target, true);
 
       if (blot instanceof ImageBlot) {
@@ -140,6 +142,19 @@
     editor.setSelection(range.index + 2, Quill.sources.SILENT);
   }
 
+  async function uploadImage({ detail: { data, caption } }) {
+    const { url } = await fetch('/editor/image.json', {
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image: data, title: caption }),
+      method: 'POST',
+    }).then(res => res.json());
+
+    insertImage({ url, caption });
+
+    imageModalOpen = false;
+    areSidebarControlsShown = false;
+  }
+
   function insertImage({ url, caption, existingBlot, layout }) {
     imageModalOpen = false;
 
@@ -162,7 +177,7 @@
       Quill.sources.USER
     );
 
-    editor.setSelection(range.index + 1, Quill.sources.SILENT);
+    editor.setSelection(range.index + 2, Quill.sources.SILENT);
   }
 
   onMount(() => {
@@ -408,7 +423,7 @@
         </svg>
       </button>
       <div
-        class="controls bg-white"
+        class="controls"
         class:hidden={!areSidebarControlsShown}
         class:flex={areSidebarControlsShown}>
         <button
@@ -469,9 +484,9 @@
 
     <div bind:this={editorElement} />
 
-    <!-- <image-modal ref="imageModal" @addingImage="insertImage" />
+    <!-- 
 
       <html-modal ref="htmlModal" @addingHTML="insertHTML" /> -->
-    <ImageModal bind:open={imageModalOpen} on:confirm={insertImage} />
+    <ImageModal bind:open={imageModalOpen} on:confirm={uploadImage} />
   </div>
 </div>
