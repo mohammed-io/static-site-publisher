@@ -13,6 +13,7 @@
   import 'quill/dist/quill.bubble.css';
   import '../../styles/quill-editor.css';
   import 'highlight.js/styles/atom-one-dark.css';
+  import ImageModal from './ImageModal.svelte';
 
   export let body = 'Hello World!';
 
@@ -21,6 +22,8 @@
   let sidebarControls;
 
   let areSidebarControlsShown = false;
+
+  let imageModalOpen = false;
 
   const listeners = [];
 
@@ -82,9 +85,9 @@
 
         // this.showImageModal(values);
       }
-    }
+    };
     editor.root.addEventListener('click', handler);
-    
+
     listeners.push(() => editor.root.removeEventListener('click', handler));
   }
 
@@ -387,7 +390,7 @@
           class="flex items-center border border-gray-200 rounded-full p-2 mx-2
           bg-white"
           type="button"
-          on:click={() => 'showImageModal'}>
+          on:click={() => (imageModalOpen = true)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="26"
@@ -444,5 +447,8 @@
     <!-- <image-modal ref="imageModal" @addingImage="insertImage" />
 
       <html-modal ref="htmlModal" @addingHTML="insertHTML" /> -->
+    <ImageModal
+      bind:open={imageModalOpen}
+      on:open={() => console.log('open')} />
   </div>
 </div>
