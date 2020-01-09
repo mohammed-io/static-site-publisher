@@ -3,7 +3,7 @@
   export let open = false;
   export let title = 'Title';
   export let closeOnEsc = true;
-  export let confirmClasses = 'bg-indigo-500 hover:bg-indigo-600 text-white';
+  export let confirmClasses = 'bg-blue-500 hover:bg-blue-600 text-white';
 
   const dispatch = createEventDispatcher();
 
