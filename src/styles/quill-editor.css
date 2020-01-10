@@ -1,13 +1,13 @@
 .ql-container {
+  @apply font-serif;
   box-sizing: border-box;
-  font-family: 'Merriweather', serif;
   height: 100%;
   margin: 0;
   position: relative;
 }
 
 .ql-editor {
-  font-family: 'Merriweather', serif;
+  @apply font-serif;
   font-size: 1.1rem;
   line-height: 1.9;
   padding: 0;
@@ -157,6 +157,7 @@ div.embedded_image[data-laout='wide'] {
 }
 
 .embedded_image p {
+  @apply font-sans;
   margin-bottom: 0 !important;
   color: #6c757d;
   padding-top: 1rem;
@@ -164,7 +165,6 @@ div.embedded_image[data-laout='wide'] {
   line-height: 1.6;
   font-weight: 400;
   text-align: center;
-  font-family: 'Karla', sans-serif;
 }
 
 @media screen and (max-width: 1024px) {
