@@ -1,6 +1,7 @@
 <script>
   import Modal from './Modal.svelte';
   import { createEventDispatcher } from 'svelte';
+  import { _ } from 'svelte-i18n';
 
   export let open = true;
 
@@ -30,9 +31,14 @@
   }
 </script>
 
-<Modal bind:open title="Upload Image" on:confirm={sendImage}>
-  <label for="image">
-    <span class="underline cursor-pointer">Choose image to new upload</span>
+<Modal
+  bind:open
+  title={$_('image_modal.title')}
+  confirmText={$_('image_modal.confirm')}
+  cancelText={$_('image_modal.cancel')}
+  on:confirm={sendImage}>
+  <label for="image" class="flex">
+    <span class="underline cursor-pointer">{$_('image_modal.body')}</span>
     <input
       bind:this={inputElement}
       type="file"
@@ -50,7 +56,7 @@
         <input
           class="w-full outline-none border-0 bg-transparent font-serif
           text-gray-800 placeholder-gray-600"
-          placeholder="Image caption (optional)"
+          placeholder={$_('image_modal.caption')}
           bind:value={caption} />
       </div>
     {/if}

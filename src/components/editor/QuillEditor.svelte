@@ -1,19 +1,18 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
-  import _ from 'lodash';
-  import 'highlight.js';
+  import { debounce } from 'lodash';
 
   import hljs from 'highlight.js';
   import Quill from 'quill';
   import Parchment from 'parchment';
-  import HTMLBlot from './HTMLBlot';
-  import ImageBlot from './ImageBlot';
-  import DividerBlot from './DividerBlot';
-
   import 'quill/dist/quill.bubble.css';
   import '../../styles/quill-editor.css';
   import 'highlight.js/styles/atom-one-dark.css';
+  import HTMLBlot from './HTMLBlot';
+  import ImageBlot from './ImageBlot';
+  import DividerBlot from './DividerBlot';
   import ImageModal from './ImageModal.svelte';
+  import { _ } from 'svelte-i18n';
 
   export let body = 'Hello World!';
 
@@ -49,8 +48,7 @@
       },
       theme: 'bubble',
       scrollingContainer: 'html, body',
-      placeholder: 'Tell your story...',
-      // placeholder: this.trans.posts.forms.editor.body,
+      placeholder: $_('editor.write_story'),
     });
 
     /**
@@ -61,7 +59,7 @@
     let tooltip = quill.theme.tooltip;
     let input = tooltip.root.querySelector('input[data-link]');
 
-    input.dataset.link = 'foo'; // this.trans.posts.forms.editor.link;
+    input.dataset.link = 'https://...';
 
     return quill;
   }
@@ -399,7 +397,7 @@
   // };
 </script>
 
-<div>
+<div class="mx-6">
   <div class="relative">
     <div
       bind:this={sidebarControls}

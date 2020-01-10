@@ -1,9 +1,12 @@
 <script>
   import { createEventDispatcher } from 'svelte';
+
   export let open = false;
   export let title = 'Title';
   export let closeOnEsc = true;
   export let confirmClasses = 'bg-blue-500 hover:bg-blue-600 text-white';
+  export let confirmText = 'Confirm';
+  export let cancelText = 'Cancel';
 
   const dispatch = createEventDispatcher();
 
@@ -100,12 +103,12 @@
           <button
             class="hover:bg-gray-100 rounded mx-1 px-4 py-2 font-bold"
             on:click={closeModal}>
-            Cancel
+            {cancelText}
           </button>
           <button
             class="{confirmClasses} rounded mx-1 px-4 py-2 font-bold"
             on:click={handleConfirm}>
-            Confirm
+            {confirmText}
           </button>
         </div>
       </slot>
