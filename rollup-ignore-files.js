@@ -1,11 +1,15 @@
-const ignoreFiles = function({ patterns = [], when = () => true } = {}) {
+const ignoreFiles = function({
+  patterns = [],
+  when = () => true,
+  asId = 'path',
+} = {}) {
   return {
     resolveId(id) {
       if (!when()) return null;
 
       if (![patterns].flat().some(pattern => id.match(pattern))) return null;
 
-      return { id: 'path', external: true };
+      return { id: asId, external: true };
     },
   };
 };
