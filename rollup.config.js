@@ -81,6 +81,7 @@ export default {
     input: config.server.input(),
     output: config.server.output(),
     plugins: [
+      ignoreFiles({ patterns: [/\/editor\/.*/g], when: () => !dev }),
       replace({
         'process.browser': false,
         'process.env.NODE_ENV': JSON.stringify(mode),
