@@ -6,6 +6,7 @@ export default {
   editor: {
     title: 'Title',
     write_story: 'Tell your story...',
+    publish: 'Publish',
   },
   image_modal: {
     title: 'Upload image',

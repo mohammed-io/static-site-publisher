@@ -1,15 +1,16 @@
 export default {
   g: {},
   options: {
-    rtl: 'true'
+    rtl: 'true',
   },
   editor: {
     title: 'العنوان',
     write_story: 'أثرِ المحتوى العربي...',
+    publish: 'إنشر',
   },
   modal: {
     confirm: 'أكد',
-    cancel: 'ألغ'
+    cancel: 'ألغ',
   },
   image_modal: {
     title: 'إرفع صورة',

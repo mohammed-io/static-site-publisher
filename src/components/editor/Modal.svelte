@@ -101,12 +101,12 @@
       <slot name="footer">
         <div class="flex flex-1 items-center justify-end px-1 py-2 bg-gray-200">
           <button
-            class="hover:bg-gray-100 rounded mx-1 px-4 py-2 font-bold"
+            class="btn hover:bg-gray-100 mx-1"
             on:click={closeModal}>
             {cancelText}
           </button>
           <button
-            class="{confirmClasses} rounded mx-1 px-4 py-2 font-bold"
+            class="btn mx-1 {confirmClasses}"
             on:click={handleConfirm}>
             {confirmText}
           </button>
