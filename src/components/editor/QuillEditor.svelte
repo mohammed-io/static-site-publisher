@@ -14,7 +14,9 @@
   import ImageModal from './ImageModal.svelte';
   import { _ } from 'svelte-i18n';
 
-  export let body = 'Hello World!';
+  export let body = '';
+
+  const imagesToDelete = new Set();
 
   let editorElement;
   let editor;
@@ -87,8 +89,42 @@
       }
     };
     editor.root.addEventListener('click', handler);
-
     listeners.push(() => editor.root.removeEventListener('click', handler));
+  }
+
+  function observeForImageDeletion() {
+    const callback = mutations => {
+      mutations
+        .flatMap(mutation => mutation.removedNodes)
+        .map(removedNodes => {
+          [...removedNodes]
+            .map(el => el.querySelector('img'))
+            .filter(Boolean)
+            .map(img => img.src)
+            .filter(url => new URL(url).host === location.host)
+            .forEach(url => {
+              imagesToDelete.add(url);
+            });
+        });
+
+      mutations
+        .flatMap(mutation => mutation.addedNodes)
+        .map(addedNodes => {
+          [...addedNodes]
+            .map(el => el.querySelector('img'))
+            .filter(Boolean)
+            .map(img => img.src)
+            .filter(url => new URL(url).host === location.host)
+            .forEach(url => {
+              imagesToDelete.delete(url);
+            });
+        });
+    };
+
+    const elementsObserver = new MutationObserver(callback);
+    elementsObserver.observe(editor.root, { childList: true });
+
+    listeners.push(elementsObserver.disconnect);
   }
 
   function initSideControls() {
@@ -183,11 +219,14 @@
 
     handleEditorValue();
     handleClicksInsideEditor();
+    observeForImageDeletion();
     initSideControls();
   });
 
   onDestroy(() => {
-    listeners.forEach(l => l());
+    while (listeners.length > 0) {
+      listeners.pop()();
+    }
   });
 
   // const foo = {

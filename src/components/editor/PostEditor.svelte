@@ -3,7 +3,8 @@
   import { _ } from 'svelte-i18n';
 
   export let title = '';
-  export let body;
+  export let body =
+    '<p>Hello Worl</p><p><br></p><div class="embedded_image" contenteditable="false" data-layout="undefined"><img alt="" src="images/k5bfmpmz.png"></div><p><br></p>';
   export let post = null;
 
   async function publish() {
@@ -25,7 +26,8 @@
 <div class="px-10 py-5">
   <button
     on:click={publish}
-    class="btn border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white">
+    class="btn border border-blue-500 text-blue-500 hover:bg-blue-500
+    hover:text-white">
     {$_('editor.publish')}
   </button>
 </div>
