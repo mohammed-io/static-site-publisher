@@ -16,10 +16,8 @@
 
   export let body = '';
 
-  const imagesToDelete = new Set();
-
+  export let editor;
   let editorElement;
-  let editor;
   let sidebarControls;
 
   let areSidebarControlsShown = false;
@@ -92,74 +90,34 @@
     listeners.push(() => editor.root.removeEventListener('click', handler));
   }
 
-  function observeForImageDeletion() {
-    const callback = mutations => {
-      mutations
-        .flatMap(mutation => mutation.removedNodes)
-        .map(removedNodes => {
-          [...removedNodes]
-            .map(el => el.querySelector('img'))
-            .filter(Boolean)
-            .map(img => img.src)
-            .filter(url => new URL(url).host === location.host)
-            .forEach(url => {
-              imagesToDelete.add(url);
-            });
-        });
-
-      mutations
-        .flatMap(mutation => mutation.addedNodes)
-        .map(addedNodes => {
-          [...addedNodes]
-            .map(el => el.querySelector('img'))
-            .filter(Boolean)
-            .map(img => img.src)
-            .filter(url => new URL(url).host === location.host)
-            .forEach(url => {
-              imagesToDelete.delete(url);
-            });
-        });
-    };
-
-    const elementsObserver = new MutationObserver(callback);
-    elementsObserver.observe(editor.root, { childList: true });
-
-    listeners.push(elementsObserver.disconnect);
-  }
-
   function initSideControls() {
     const Block = Quill.import('blots/block');
 
-    const emitter = editor.on(
-      Quill.events.EDITOR_CHANGE,
-      (eventType, range) => {
-        if (eventType !== Quill.events.SELECTION_CHANGE) return;
+    editor.on(Quill.events.EDITOR_CHANGE, (eventType, range) => {
+      if (eventType !== Quill.events.SELECTION_CHANGE) return;
 
-        if (range == null) return;
+      if (range == null) return;
 
-        if (range.length === 0) {
-          const [block, offset] = editor.scroll.descendant(Block, range.index);
+      if (range.length === 0) {
+        const [block, offset] = editor.scroll.descendant(Block, range.index);
 
-          if (
-            block != null &&
-            block.domNode.firstChild instanceof HTMLBRElement
-          ) {
-            const lineBounds = editor.getBounds(range);
+        if (
+          block != null &&
+          block.domNode.firstChild instanceof HTMLBRElement
+        ) {
+          const lineBounds = editor.getBounds(range);
 
-            sidebarControls.style.display = 'flex';
+          sidebarControls.style.display = 'flex';
 
-            // sidebarControls.style.left = lineBounds.left - 50 + 'px';
-            sidebarControls.style.top = lineBounds.top - 2 + 'px';
-          } else {
-            sidebarControls.style.display = 'none';
-          }
+          // sidebarControls.style.left = lineBounds.left - 50 + 'px';
+          sidebarControls.style.top = lineBounds.top - 2 + 'px';
         } else {
           sidebarControls.style.display = 'none';
         }
+      } else {
+        sidebarControls.style.display = 'none';
       }
-    );
-
-    listeners.push(emitter.removeAllListeners);
+    });
   }
 
   function openSidebarControls() {
@@ -219,7 +177,6 @@
 
     handleEditorValue();
     handleClicksInsideEditor();
-    observeForImageDeletion();
     initSideControls();
   });
 
