@@ -6,6 +6,8 @@ import path from 'path';
  * @returns {Promise<string[]>}
  */
 export async function traverseDir(dir) {
+  dir = path.isAbsolute(dir) ? dir : path.resolve(process.cwd(), dir);
+
   return fs.readdir(dir).then(files => {
     return Promise.all(
       files.map(async file => {

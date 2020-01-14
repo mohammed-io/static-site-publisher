@@ -1,8 +1,6 @@
-import { traverseDir } from '../../utils/traverseDir';
+import { traverseDir } from '../utils/traverseDir';
 import { promises as fs } from 'fs';
 import path from 'path';
-
-const dev = process.env.NODE_ENV === 'development';
 
 let cachedPosts = null;
 
@@ -12,11 +10,10 @@ let cachedPosts = null;
  * @param {*} perPage
  * @returns {Promise<[]>}
  */
-export async function posts(page = null, perPage = 10) {
-  const sliceArgs =
-    page === null ? [] : [(page - 1) * page, (page - 1) * page + perPage];
+export const getPosts = async (page = null, perPage = 10) => {
+  const sliceArgs = page === null ? [] : [(page - 1) * perPage, page * perPage];
 
-  if (!dev && cachedPosts) return cachedPosts.slice(...sliceArgs);
+  if (cachedPosts) return cachedPosts.slice(...sliceArgs);
 
   cachedPosts = await traverseDir('src/blog/posts').then(paths => {
     return Promise.all(
@@ -34,4 +31,6 @@ export async function posts(page = null, perPage = 10) {
   });
 
   return cachedPosts.slice(...sliceArgs);
-}
+};
+
+export const invalidatePosts = () => (cachedPosts = null);

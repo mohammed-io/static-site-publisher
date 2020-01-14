@@ -1,8 +1,9 @@
 import { promises as fs, existsSync } from 'fs';
 import slugify from 'slugify';
 import path from 'path';
-import { generateNewFilePath } from '../../blog/config';
+import { generateNewFilePathFor } from '../../blog/config';
 import { compileTemplate } from '../../blog/post-template';
+import { invalidatePosts } from '../../blog/load-posts';
 
 export async function post(req, res) {
   const post = req.body;
@@ -24,13 +25,15 @@ export async function post(req, res) {
 
   const payload = { ...post, slug, ...dates };
 
-  const blogFilePath = generateNewFilePath(`${dates.createdAt}-${slug}`);
+  const blogFilePath = await generateNewFilePathFor(payload);
 
   if (!existsSync(path.dirname(blogFilePath))) {
     await fs.mkdir(path.dirname(blogFilePath), { recursive: true });
   }
 
   await fs.writeFile(blogFilePath, compileTemplate(payload));
+
+  invalidatePosts();
 
   res.end(
     JSON.stringify({

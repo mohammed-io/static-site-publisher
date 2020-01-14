@@ -1,16 +1,19 @@
-import posts from './_posts.js';
+import { getPosts } from '../../blog/load-posts';
 
-const contents = JSON.stringify(posts.map(post => {
-	return {
-		title: post.title,
-		slug: post.slug
-	};
-}));
+const contents = async () =>
+  JSON.stringify(
+    (await getPosts()).map(post => {
+      return {
+        title: post.title,
+        slug: post.slug,
+      };
+    })
+  );
 
-export function get(req, res) {
-	res.writeHead(200, {
-		'Content-Type': 'application/json'
-	});
+export async function get(req, res) {
+  res.writeHead(200, {
+    'Content-Type': 'application/json',
+  });
 
-	res.end(contents);
+  res.end(await contents());
 }
