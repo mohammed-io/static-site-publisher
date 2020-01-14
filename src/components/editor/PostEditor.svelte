@@ -66,17 +66,8 @@
       listeners.pop()();
     }
   });
-
-  let show = true;
-
-  setTimeout(() => (show = false), 5000);
 </script>
 
-<svelte:head>
-  <link
-    rel="stylesheet"
-    href="//fonts.googleapis.com/css?family=Karla|Merriweather:400,700,900" />
-</svelte:head>
 <div class="px-10 py-5">
   <button
     on:click={publish}
@@ -93,6 +84,4 @@
     class="w-full outline-none border-0 bg-transparent font-serif text-5xl
     text-gray-800 placeholder-gray-600" />
 </div>
-{#if show}
-  <QuillEditor bind:body bind:editor />
-{/if}
+<QuillEditor bind:body bind:editor />

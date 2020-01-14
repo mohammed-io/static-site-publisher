@@ -6,27 +6,12 @@
   font-style: normal;
   unicode-range: U+0600-06FF, U+200C-200E, U+2010-2011, U+FB50-FDFF, U+FE80-FEFC;
 }
-@font-face {
-  font-family: 'Dubai';
-  src: url('/fonts/DubaiW23-Medium.woff') format('woff'),
-    url('/fonts/DubaiW23-Medium.woff2#Dubai-Medium') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  unicode-range: U+0600-06FF, U+200C-200E, U+2010-2011, U+FB50-FDFF, U+FE80-FEFC;
-}
+
 @font-face {
   font-family: 'Dubai';
   src: url('/fonts/DubaiW23-Regular.woff') format('woff'),
     url('/fonts/DubaiW23-Regular.woff2#Dubai-Regular') format('woff2');
   font-weight: normal;
-  font-style: normal;
-  unicode-range: U+0600-06FF, U+200C-200E, U+2010-2011, U+FB50-FDFF, U+FE80-FEFC;
-}
-@font-face {
-  font-family: 'Dubai';
-  src: url('/fonts/DubaiW23-Light.woff') format('woff'),
-    url('/fonts/DubaiW23-Light.woff2#Dubai-Light') format('woff2');
-  font-weight: 300;
   font-style: normal;
   unicode-range: U+0600-06FF, U+200C-200E, U+2010-2011, U+FB50-FDFF, U+FE80-FEFC;
 }

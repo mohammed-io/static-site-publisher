@@ -6,7 +6,7 @@ export default {
   editor: {
     title: 'العنوان',
     write_story: 'أثرِ المحتوى العربي...',
-    publish: 'إنشر',
+    publish: 'أنشر',
   },
   modal: {
     confirm: 'أكد',
