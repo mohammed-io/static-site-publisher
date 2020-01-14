@@ -12,7 +12,12 @@ export async function get(req, res, next) {
       'Content-Type': 'application/json',
     });
 
-    res.end(JSON.stringify(post));
+    res.end(
+      JSON.stringify({
+        success: true,
+        data: post,
+      })
+    );
   } else {
     res.writeHead(404, {
       'Content-Type': 'application/json',
@@ -20,6 +25,7 @@ export async function get(req, res, next) {
 
     res.end(
       JSON.stringify({
+        success: false,
         message: `Not found`,
       })
     );
