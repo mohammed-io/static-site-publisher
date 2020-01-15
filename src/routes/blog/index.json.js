@@ -1,4 +1,4 @@
-import { getPosts } from '../../blog/load-posts';
+import { getPosts } from '../../blog/posts-repository';
 
 const contents = async (page = 1) => {
   const { length: total } = await getPosts();
