@@ -1,18 +1,22 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
   import QuillEditor from './QuillEditor.svelte';
+  import slugify from 'slugify';
   import { _ } from 'svelte-i18n';
 
   export let title = '';
-  export let body =
-    '<p>Hello Worl</p><p><br></p><div class="embedded_image" contenteditable="false" data-layout="undefined"><img alt="" src="images/k5bfmpmz.png"></div><p><br></p>';
-  export let post = null;
+  export let slug = null;
+  export let body = '<p>Hello World</p><p><br></p><p><br></p>';
+
+  $: generatedSlug = slug ? slug : slugify(title, { lower: true });
 
   export let editor;
   const listeners = [];
   const imagesToDelete = new Set();
 
   async function publish() {
+    if (!generatedSlug) return;
+
     await fetch('/editor/post.json', {
       body: JSON.stringify({ body, title }),
       method: 'POST',
@@ -75,6 +79,15 @@
     hover:text-white">
     {$_('editor.publish')}
   </button>
+</div>
+<div class="px-10">
+  <input
+    type="text"
+    on:change={e => (slug = slugify(e.target.value))}
+    value={slug}
+    placeholder={generatedSlug || 'slug'}
+    class="w-full outline-none border-0 bg-transparent italic font-serif
+    text-gray-700 placeholder-gray-400" />
 </div>
 <div class="px-10">
   <input
