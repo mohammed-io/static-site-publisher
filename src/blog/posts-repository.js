@@ -11,6 +11,31 @@ let cachedPosts = null;
 export const invalidatePosts = () => (cachedPosts = null);
 
 /**
+ * @returns {Promise<[]>}
+ */
+export const getFilesAndPosts = async () => {
+  if (!cachedPosts) {
+    cachedPosts = await traverseDir('src/blog/posts').then(paths => {
+      return Promise.all(
+        paths
+          .filter(file => file.endsWith('.json'))
+          .sort((a, b) => {
+            const [file1, file2] = [path.basename(a), path.basename(b)];
+
+            return file2.localeCompare(file1);
+          })
+          .map(async file => [
+            file,
+            JSON.parse(await fs.readFile(file).then(r => r.toString())),
+          ])
+      );
+    });
+  }
+
+  return cachedPosts;
+};
+
+/**
  *
  * @param {*} page
  * @param {*} perPage
@@ -19,24 +44,9 @@ export const invalidatePosts = () => (cachedPosts = null);
 export const getPosts = async (page = null, perPage = 10) => {
   const sliceArgs = page === null ? [] : [(page - 1) * perPage, page * perPage];
 
-  if (cachedPosts) return cachedPosts.slice(...sliceArgs);
-
-  cachedPosts = await traverseDir('src/blog/posts').then(paths => {
-    return Promise.all(
-      paths
-        .filter(file => file.endsWith('.json'))
-        .sort((a, b) => {
-          const [file1, file2] = [path.basename(a), path.basename(b)];
-
-          return file2.localeCompare(file1);
-        })
-        .map(async file =>
-          JSON.parse(await fs.readFile(file).then(r => r.toString()))
-        )
-    );
-  });
-
-  return cachedPosts.slice(...sliceArgs);
+  return (await getFilesAndPosts())
+    .map(([_, post]) => post)
+    .slice(...sliceArgs);
 };
 
 export const savePost = async post => {
@@ -57,13 +67,13 @@ export const savePost = async post => {
 
   const payload = { ...post, slug, ...dates };
 
-  const blogFilePath = await generateNewFilePathFor(payload);
+  const postFilePath = await generateNewFilePathFor(payload);
 
-  if (!existsSync(path.dirname(blogFilePath))) {
-    await fs.mkdir(path.dirname(blogFilePath), { recursive: true });
+  if (!existsSync(path.dirname(postFilePath))) {
+    await fs.mkdir(path.dirname(postFilePath), { recursive: true });
   }
 
-  await fs.writeFile(blogFilePath, compileTemplate(payload));
+  await fs.writeFile(postFilePath, compileTemplate(payload));
 
   invalidatePosts();
 
@@ -74,4 +84,33 @@ export const findPostBySlug = async slug => {
   const post = (await getPosts()).find(p => p.slug === slug);
 
   return Maybe.of(post);
+};
+
+export const updatePost = async (slug, update = null) => {
+  if (!update) throw new Error('The update should have value');
+
+  const [postFile, post] =
+    (await getFilesAndPosts()).find(([_, p]) => p.slug === slug) || [];
+
+  if (!file) return false;
+
+  Object.assign(post, update, { updatedAt: Number(new Date()) });
+
+  await fs.writeFile(postFile, compileTemplate(post));
+
+  invalidatePosts();
+
+  return true;
+};
+
+export const deletePost = async slug => {
+  const [file] =
+    (await getFilesAndPosts()).find(([_, p]) => p.slug === slug) || [];
+
+  if (file) {
+    await fs.unlink(file);
+    invalidatePosts();
+  }
+
+  return !!file;
 };
