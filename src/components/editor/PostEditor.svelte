@@ -83,7 +83,7 @@
 <div class="px-10">
   <input
     type="text"
-    on:change={e => (slug = slugify(e.target.value, {lower: true}))}
+    on:input={e => (slug = slugify(e.target.value, { lower: true }))}
     value={slug}
     placeholder={generatedSlug || 'slug'}
     class="w-full outline-none border-0 bg-transparent italic font-serif
