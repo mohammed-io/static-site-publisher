@@ -92,7 +92,7 @@ export const updatePost = async (slug, update = null) => {
   const [postFile, post] =
     (await getFilesAndPosts()).find(([_, p]) => p.slug === slug) || [];
 
-  if (!file) return false;
+  if (!file) return Maybe.none();
 
   Object.assign(post, update, { updatedAt: Number(new Date()) });
 
@@ -100,7 +100,7 @@ export const updatePost = async (slug, update = null) => {
 
   invalidatePosts();
 
-  return true;
+  return Maybe.of(post);
 };
 
 export const deletePost = async slug => {

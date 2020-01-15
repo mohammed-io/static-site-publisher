@@ -3,7 +3,7 @@ import { getPosts } from '../../blog/posts-repository';
 const contents = async (page = 1) => {
   const { length: total } = await getPosts();
 
-  const result = {
+  return {
     success: true,
     total,
     data: (await getPosts(page)).map(post => {
@@ -13,16 +13,10 @@ const contents = async (page = 1) => {
       };
     }),
   };
-
-  return JSON.stringify(result);
 };
 
 export async function get(req, res) {
   const { page } = req.query;
 
-  res.writeHead(200, {
-    'Content-Type': 'application/json',
-  });
-
-  res.end(await contents(page));
+  return res.json(await contents(page));
 }
