@@ -9,7 +9,6 @@ export const generateNewFilePathFor = async post => {
     process.cwd(),
     'src/blog/posts',
     subFolder,
-    `${Number(createdAt)}`,
-    `${slug}.json`
+    `${Number(createdAt)}--${slug}.json`
   );
 };
