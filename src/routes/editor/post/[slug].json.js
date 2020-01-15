@@ -37,3 +37,5 @@ export async function put(req, res) {
       });
     });
 }
+
+export const patch = put;
