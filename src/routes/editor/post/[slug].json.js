@@ -20,11 +20,20 @@ export async function put(req, res) {
 
   const maybe = await updatePost(slug, post);
 
-  res.end(
-    JSON.stringify({
-      success: true,
-      message: 'Post read successfully',
-      data,
-    })
-  );
+  maybe
+    .map(data =>
+      res.json({
+        success: true,
+        message: 'Post updated successfully',
+        data,
+      })
+    )
+    .getOr(() => {
+      res.statusCode = 500;
+
+      res.json({
+        success: false,
+        message: 'Post update failed',
+      });
+    });
 }
