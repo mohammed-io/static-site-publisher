@@ -2,11 +2,11 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import slugify from 'slugify';
 
-export async function post(req, res) {
+export const post = async (req, res) => {
   const { image, title = '' } = req.body;
 
   if (!image) {
-    return res.end(JSON.stringify({ message: 'Ignoring' }));
+    return res.json({ message: 'Ignoring' });
   }
 
   const [dataPart, imagePart] = image.split(';base64,');
@@ -21,5 +21,5 @@ export async function post(req, res) {
     encoding: 'base64',
   });
 
-  res.end(JSON.stringify({ url }));
-}
+  res.json({ url });
+};
