@@ -1,6 +1,10 @@
-import { findPostBySlug, updatePost } from '../../../blog/posts-repository';
+import {
+  findPostBySlug,
+  updatePost,
+  deletePost,
+} from '../../../blog/posts-repository';
 
-export async function get(req, res) {
+export const get = async (req, res) => {
   const { slug } = req.params;
 
   const data = await findPostBySlug(slug);
@@ -12,9 +16,9 @@ export async function get(req, res) {
       data,
     })
   );
-}
+};
 
-export async function put(req, res) {
+export const put = async (req, res) => {
   const { slug } = req.params;
   const post = req.body;
 
@@ -36,6 +40,22 @@ export async function put(req, res) {
         message: 'Post update failed',
       });
     });
-}
+};
 
 export const patch = put;
+
+export const del = async (req, res) => {
+  const { slug } = req.params;
+
+  if (await deletePost(slug)) {
+    return res.json({
+      success: true,
+      message: 'Post deleted successfully',
+    });
+  }
+
+  return res.json({
+    success: false,
+    message: 'Post deleted failed',
+  });
+};
