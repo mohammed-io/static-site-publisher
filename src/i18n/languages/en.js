@@ -1,12 +1,17 @@
 export default {
   g: {},
   options: {
-    rtl: 'false'
+    rtl: 'false',
   },
   editor: {
     title: 'Title',
     write_story: 'Tell your story...',
     publish: 'Publish',
+  },
+  seo_modal: {
+    title: 'SEO & Social',
+    confirm: 'Save',
+    cancel: 'Cancel',
   },
   image_modal: {
     title: 'Upload image',

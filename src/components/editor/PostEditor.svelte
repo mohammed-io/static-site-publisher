@@ -1,16 +1,20 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
-  import QuillEditor from './QuillEditor.svelte';
   import slugify from 'slugify';
   import { _ } from 'svelte-i18n';
+  import QuillEditor from './QuillEditor.svelte';
+  import SeoModal from './SeoModal.svelte';
 
   export let title = '';
-  export let slug = null;
+  export let slug = '';
   export let body = '<p>Hello World</p><p><br></p><p><br></p>';
+  export let meta = {};
+  export let editor;
+
+  let isSeoModalOpen = true;
 
   $: generatedSlug = slug ? slug : slugify(title, { lower: true });
 
-  export let editor;
   const listeners = [];
   const imagesToDelete = new Set();
 
@@ -86,15 +90,14 @@
     on:input={e => (slug = slugify(e.target.value, { lower: true }))}
     value={slug}
     placeholder={generatedSlug || 'slug'}
-    class="w-full outline-none border-0 bg-transparent italic font-serif
-    text-gray-700 placeholder-gray-400" />
+    class="input italic text-gray-700 placeholder-gray-400" />
 </div>
 <div class="px-10">
   <input
     type="text"
     bind:value={title}
     placeholder={$_('editor.title')}
-    class="w-full outline-none border-0 bg-transparent font-serif text-5xl
-    text-gray-800 placeholder-gray-600" />
+    class="input text-5xl text-gray-800 placeholder-gray-600" />
 </div>
 <QuillEditor bind:body bind:editor />
+<SeoModal bind:open={isSeoModalOpen} bind:meta />

@@ -3,7 +3,7 @@
   import { createEventDispatcher } from 'svelte';
   import { _ } from 'svelte-i18n';
 
-  export let open = true;
+  export let open = false;
 
   const dispatch = createEventDispatcher();
 
@@ -54,8 +54,7 @@
 
       <div class="py-2">
         <input
-          class="w-full outline-none border-0 bg-transparent font-serif
-          text-gray-800 placeholder-gray-600"
+          class="input text-gray-800 placeholder-gray-600"
           placeholder={$_('image_modal.caption')}
           bind:value={caption} />
       </div>
