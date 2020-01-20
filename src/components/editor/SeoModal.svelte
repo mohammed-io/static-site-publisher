@@ -7,7 +7,7 @@
   export let meta = {};
   export let post = {};
 
-  let tempMeta = {
+  const tempMeta = {
     'og:title': post.title,
     'twitter:title': post.title,
     'twitter:card': 'summary_large_image',
@@ -16,7 +16,7 @@
 
   const dispatch = createEventDispatcher();
 
-  function onConfirm() {
+  function handleConfirm() {
     meta = tempMeta;
     open = false;
   }
@@ -26,6 +26,7 @@
   title={$_('seo_modal.title')}
   confirmText={$_('seo_modal.confirm')}
   cancelText={$_('seo_modal.cancel')}
+  on:confirm={handleConfirm}
   bind:open>
 
   <div class="py-2">

@@ -62,7 +62,7 @@
     const elementsObserver = new MutationObserver(callback);
     elementsObserver.observe(editor.root, { childList: true });
 
-    listeners.push(elementsObserver.disconnect);
+    listeners.push(() => elementsObserver.disconnect());
   }
 
   onMount(() => {

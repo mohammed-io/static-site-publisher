@@ -1,9 +1,8 @@
 <script context="module">
-  import { waitLocale } from 'svelte-i18n'
+  import { waitLocale } from 'svelte-i18n';
 
   export async function preload() {
-    
-    return waitLocale()
+    return waitLocale();
   }
 </script>
 
@@ -17,16 +16,6 @@
   $: isRtl = $_('options.rtl') === 'true';
 </script>
 
-<svelte:head>
-  {#if isRtl}
-    <style>
-      html, body {
-        direction: rtl;
-      }
-    </style>
-  {/if}
-</svelte:head>
-
 <style>
   main {
     position: relative;
@@ -38,6 +27,16 @@
   }
 </style>
 
+<svelte:head>
+  {#if isRtl}
+    <style>
+      html,
+      body {
+        direction: rtl;
+      }
+    </style>
+  {/if}
+</svelte:head>
 <Nav {segment} />
 
 <main>
