@@ -22,7 +22,7 @@
     if (!generatedSlug) return;
 
     await fetch('/editor/post.json', {
-      body: JSON.stringify({ body, title }),
+      body: JSON.stringify({ body, slug, title, meta }),
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
     })
