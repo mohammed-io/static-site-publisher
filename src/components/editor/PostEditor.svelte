@@ -11,7 +11,7 @@
   export let meta = {};
   export let editor;
 
-  let isSeoModalOpen = true;
+  let isSeoModalOpen = false;
 
   $: generatedSlug = slug ? slug : slugify(title, { lower: true });
 
