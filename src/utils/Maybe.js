@@ -70,7 +70,7 @@ export class Maybe {
       return matcher.some(this.value);
     }
 
-    if ('error' in matcher) {
+    if ('none' in matcher) {
       return matcher.none();
     }
   }
