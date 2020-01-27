@@ -54,7 +54,9 @@ export class Result {
    */
   map(mapper) {
     try {
-      return Result.success(mapper(this.value));
+      return this.hasValue()
+        ? Result.success(mapper(this.value))
+        : Result.error(this.error);
     } catch (err) {
       return Result.error(err);
     }
@@ -68,7 +70,7 @@ export class Result {
    */
   flatMap(mapper) {
     try {
-      return mapper(this.value);
+      return this.hasValue() ? mapper(this.value) : Result.error(this.error);
     } catch (err) {
       return Result.error(err);
     }

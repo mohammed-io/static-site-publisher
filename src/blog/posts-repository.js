@@ -61,24 +61,31 @@ export const savePost = async post => {
 
   const slug = post.slug || slugify(post.title, { lower: true });
 
-  const dates = {
-    createdAt: Number(new Date()),
-    updatedAt: Number(new Date()),
-  };
+  return (await findPostBySlug(slug))
+    .select({
+      some: () => Result.error(new Error('Slug is duplicated')),
+      none: () => Maybe.some(post),
+    })
+    .flatMap(async post => {
+      const dates = {
+        createdAt: Number(new Date()),
+        updatedAt: Number(new Date()),
+      };
 
-  const payload = { ...post, slug, ...dates };
+      const payload = { ...post, slug, ...dates };
 
-  const postFilePath = await generateNewFilePathFor(payload);
+      const postFilePath = await generateNewFilePathFor(payload);
 
-  if (!existsSync(path.dirname(postFilePath))) {
-    await fs.mkdir(path.dirname(postFilePath), { recursive: true });
-  }
+      if (!existsSync(path.dirname(postFilePath))) {
+        await fs.mkdir(path.dirname(postFilePath), { recursive: true });
+      }
 
-  await fs.writeFile(postFilePath, compileTemplate(payload));
+      await fs.writeFile(postFilePath, compileTemplate(payload));
 
-  invalidatePosts();
+      invalidatePosts();
 
-  return Result.success(payload);
+      return Result.success(payload);
+    });
 };
 
 export const findPostBySlug = async slug => {
