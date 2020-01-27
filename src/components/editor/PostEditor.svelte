@@ -21,7 +21,7 @@
   async function publish() {
     if (!generatedSlug) return;
 
-    await fetch('/editor/post.json', {
+    await fetch('/editor.json', {
       body: JSON.stringify({ body, slug, title, meta }),
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

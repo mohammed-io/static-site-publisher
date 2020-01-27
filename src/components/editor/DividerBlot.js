@@ -8,6 +8,6 @@ class DividerBlot extends BlockEmbed {
 
 DividerBlot.blotName = 'divider';
 DividerBlot.tagName = 'hr';
-HTMLBlot.className = 'dots';
+DividerBlot.className = 'dots';
 
 export default DividerBlot;
