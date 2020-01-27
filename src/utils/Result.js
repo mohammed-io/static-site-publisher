@@ -3,32 +3,34 @@
 /**
  * @template T
  */
-export class Maybe {
+export class Result {
   /**
    * @param {T} value
+   * @param {Error} error
+   * @private
    */
-  constructor(value) {
-    /**
-     * @private
-     */
+  constructor(value = null, error = null) {
     this.value = value === undefined ? null : value;
+
+    this.error = error === undefined ? null : error;
   }
 
   /**
    * @template T
    * @param {T} value
-   * @returns {Maybe<T>}
+   * @returns {Result<T>}
    */
-  static some(value) {
-    return new Maybe(value);
+  static success(value) {
+    return new Result(value);
   }
 
   /**
    * @template T
-   * @returns {Maybe<T>}
+   * @param {Error} error
+   * @returns {Result<T>}
    */
-  static none() {
-    return new Maybe(null);
+  static error(error) {
+    return new Result(null, error);
   }
 
   /**
@@ -39,24 +41,37 @@ export class Maybe {
   }
 
   /**
+   * @returns {boolean}
+   */
+  hasError() {
+    return this.error !== null;
+  }
+
+  /**
    * @template R
    * @param {(f: T) => R} mapper
-   * @returns {Maybe<R>}
+   * @returns {Result<R>}
    */
   map(mapper) {
-    return this.hasValue() ? Maybe.some(mapper(this.value)) : Maybe.none();
+    try {
+      return Result.success(mapper(this.value));
+    } catch (err) {
+      return Result.error(err);
+    }
   }
 
   /**
    *
    * @template R
-   * @param {(f: T) => Maybe<R>} mapper
-   * @returns {Maybe<R>}
+   * @param {(f: T) => Result<R>} mapper
+   * @returns {Result<R>}
    */
   flatMap(mapper) {
-    if (!this.hasValue()) return Maybe.none();
-
-    return mapper(this.value);
+    try {
+      return mapper(this.value);
+    } catch (err) {
+      return Result.error(err);
+    }
   }
 
   /**
@@ -66,12 +81,12 @@ export class Maybe {
   select(matcher) {
     if (!matcher) throw new Error('Matcher should have a value');
 
-    if (this.hasValue() && 'some' in matcher) {
-      return matcher.some(this.value);
+    if (this.hasValue() && 'success' in matcher) {
+      return matcher.success(this.value);
     }
 
     if ('error' in matcher) {
-      return matcher.none();
+      return matcher.error(this.error);
     }
   }
 
@@ -97,6 +112,8 @@ export class Maybe {
    * @returns {string}
    */
   toString() {
-    return this.hasValue() ? `Maybe[${this.value.toString()}]` : 'Maybe[None]';
+    return this.hasValue()
+      ? `Result[${this.value.toString()}]`
+      : 'Result[None]';
   }
 }
