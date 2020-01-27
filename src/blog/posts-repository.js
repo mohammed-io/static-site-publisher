@@ -5,6 +5,7 @@ import { generateNewFilePathFor } from './config';
 import { compileTemplate } from './post-template';
 import { traverseDir } from '../utils/traverseDir';
 import { Maybe } from '../utils/Maybe';
+import { Result } from '../utils/Result';
 
 let cachedPosts = null;
 
@@ -51,11 +52,11 @@ export const getPosts = async (page = null, perPage = 10) => {
 
 export const savePost = async post => {
   if (!post.title) {
-    throw new Error('Title is required');
+    return Result.error(new Error('Title is required'));
   }
 
   if (!post.body) {
-    throw new Error('Body is required');
+    throw Result.error(new Error('Body is required'));
   }
 
   const slug = post.slug || slugify(post.title, { lower: true });
@@ -77,13 +78,13 @@ export const savePost = async post => {
 
   invalidatePosts();
 
-  return payload;
+  return Result.success(payload);
 };
 
 export const findPostBySlug = async slug => {
   const post = (await getPosts()).find(p => p.slug === slug);
 
-  return Maybe.of(post);
+  return Maybe.some(post);
 };
 
 export const updatePost = async (slug, update = null) => {
@@ -100,7 +101,7 @@ export const updatePost = async (slug, update = null) => {
 
   invalidatePosts();
 
-  return Maybe.of(post);
+  return Result.success(post);
 };
 
 export const deletePost = async slug => {
@@ -110,7 +111,8 @@ export const deletePost = async slug => {
   if (file) {
     await fs.unlink(file);
     invalidatePosts();
+    return Result.success(file);
   }
 
-  return !!file;
+  return Result.error(new Error('Post not found'));
 };

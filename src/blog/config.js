@@ -12,3 +12,5 @@ export const generateNewFilePathFor = async post => {
     `${Number(createdAt)}--${slug}.json`
   );
 };
+
+export const locales = null;
