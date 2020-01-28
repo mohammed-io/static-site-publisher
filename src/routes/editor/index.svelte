@@ -55,7 +55,7 @@
   </a>
 </div>
 {#each allPosts as post (post.slug)}
-  <article class="p-3 my-5 rounded shadow font-serif">
+  <article class="p-5 my-5 rounded shadow font-serif">
     <div class="flex flex-row">
       <time class="text-sm text-gray-700 flex-1">
         {moment(post.updatedAt).format('MMM DD, YYYY')}
