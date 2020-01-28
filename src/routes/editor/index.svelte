@@ -9,6 +9,12 @@
       .then(res => res.json())
       .then(res => res.data);
   });
+
+  function excerpt(text, limit = 200) {
+    if (text.length < limit) return text;
+
+    return text.substring(0, limit) + '...';
+  }
 </script>
 
 <div class="py-3 my-5">
@@ -27,8 +33,7 @@
       </time>
       <h1 class="font-bold text-3xl py-4">{post.title}</h1>
       <p>
-        {@html post.body.substring(0, 200)}
-        ...
+        {@html excerpt(post.body)}
       </p>
     </article>
   </a>
