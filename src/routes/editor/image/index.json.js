@@ -6,7 +6,7 @@ export const post = async (req, res) => {
   const { image, title = '' } = req.body;
 
   if (!image) {
-    return res.json({ message: 'Ignoring' });
+    return res.json({ success: false, message: 'Ignoring' });
   }
 
   const [dataPart, imagePart] = image.split(';base64,');
@@ -21,5 +21,5 @@ export const post = async (req, res) => {
     encoding: 'base64',
   });
 
-  res.json({ url });
+  res.json({ success: true, url });
 };

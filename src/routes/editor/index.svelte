@@ -18,6 +18,21 @@
     })
       .then(res => res.json())
       .then(console.log)
+      .then(() =>
+        Promise.all(
+          [document.createElement('div')]
+            .map(el => {
+              el.innerHTML = post.body;
+              return el;
+            })
+            .flatMap(el => [...el.querySelectorAll('img')])
+            .map(img => new URL(img.src))
+            .filter(url => url.host === location.host)
+            .map(url =>
+              fetch(url.pathname.replace('/images/', ''), { method: 'DELETE' })
+            )
+        )
+      )
       .then(() => {
         allPosts = allPosts.filter(p => p !== post);
       });
