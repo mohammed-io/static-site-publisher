@@ -14,6 +14,12 @@
   }
 </script>
 
+<div class="px-10">
+<a href="/editor" class="underline text-gray-500 hover:text-gray-600">
+  {'<'}
+  All posts</a>
+</div>
+
 <Loadable
   loader={() => import('../../components/editor/PostEditor.svelte')}
   let:component>
