@@ -1,5 +1,5 @@
 <script>
-  import { onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy, createEventDispatcher } from 'svelte';
   import slugify from 'slugify';
   import { _ } from 'svelte-i18n';
   import QuillEditor from './QuillEditor.svelte';
@@ -11,6 +11,8 @@
   export let meta = {};
   export let editor;
 
+  const dispatch = createEventDispatcher();
+
   let isSeoModalOpen = false;
 
   $: generatedSlug = slug ? slug : slugify(title, { lower: true });
@@ -21,13 +23,7 @@
   async function publish() {
     if (!generatedSlug) return;
 
-    await fetch('/editor.json', {
-      body: JSON.stringify({ body, slug, title, meta }),
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then(res => res.json())
-      .then(console.log);
+    dispatch('save');
   }
 
   function observeForImageDeletion() {

@@ -100,7 +100,7 @@ export const updatePost = async (slug, update = null) => {
   const [postFile, post] =
     (await getFilesAndPosts()).find(([_, p]) => p.slug === slug) || [];
 
-  if (!file) return Maybe.none();
+  if (!postFile) return Result.error(new Error('Post does not exist'));
 
   Object.assign(post, update, { updatedAt: Number(new Date()) });
 
