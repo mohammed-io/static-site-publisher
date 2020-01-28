@@ -28,8 +28,9 @@
             .flatMap(el => [...el.querySelectorAll('img')])
             .map(img => new URL(img.src))
             .filter(url => url.host === location.host)
-            .map(url =>
-              fetch(url.pathname.replace('/images/', ''), { method: 'DELETE' })
+            .map(url => url.pathname.replace('/images/', ''))
+            .map(image =>
+              fetch(`/editor/image/${image}.json`, { method: 'DELETE' })
             )
         )
       )
