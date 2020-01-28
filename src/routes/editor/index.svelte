@@ -27,11 +27,11 @@
 </div>
 {#each allPosts as post (post.slug)}
   <a href="/editor/{post.slug}">
-    <article class="p-3 my-5 rounded shadow">
+    <article class="p-3 my-5 rounded shadow font-serif">
       <time class="text-sm text-gray-700">
         {moment(post.updatedAt).format('MMM DD, YYYY')}
       </time>
-      <h1 class="font-bold text-3xl py-4">{post.title}</h1>
+      <h1 class="font-semibold text-3xl py-5">{post.title}</h1>
       <p>
         {@html excerpt(post.body)}
       </p>
