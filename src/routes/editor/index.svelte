@@ -76,7 +76,7 @@
       </button>
     </div>
     <a href="/editor/{post.slug}">
-      <h1 class="font-semibold text-3xl py-5">{post.title}</h1>
+      <h1 class="text-3xl py-5">{post.title}</h1>
       <p>
         {@html excerpt(post.body)}
       </p>
