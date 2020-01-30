@@ -7,7 +7,7 @@
 
   export let title = '';
   export let slug = '';
-  export let body = '<p>Hello World</p><p><br></p><p><br></p>';
+  export let body = '';
   export let meta = {};
   export let editor;
 
@@ -23,6 +23,11 @@
   async function publish() {
     if (!generatedSlug) return;
 
+    await Promise.all(
+      [...imagesToDelete].map(image =>
+        fetch(`/editor/image/${image}.json`, { method: 'DELETE' })
+      )
+    );
     dispatch('save');
   }
 
@@ -37,7 +42,7 @@
             .map(img => img.src)
             .filter(url => new URL(url).host === location.host)
             .forEach(url => {
-              imagesToDelete.add(url);
+              imagesToDelete.add(new URL(url).pathname.replace('/images/', ''));
             });
         });
 
@@ -50,7 +55,9 @@
             .map(img => img.src)
             .filter(url => new URL(url).host === location.host)
             .forEach(url => {
-              imagesToDelete.delete(url);
+              imagesToDelete.delete(
+                new URL(url).pathname.replace('/images/', '')
+              );
             });
         });
     };
