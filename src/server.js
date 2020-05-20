@@ -5,7 +5,6 @@ import compression from 'compression';
 import * as sapper from '@sapper/server';
 import bodyParser from 'body-parser';
 import './i18n';
-import moment from 'moment';
 import { addJsonHelperMiddleware } from './add-json-helper';
 
 const { PORT, NODE_ENV } = process.env;
@@ -17,7 +16,14 @@ polka() // You can also use Express
     compression({ threshold: 0 }),
     bodyParser.json({ limit: '50MB' }),
     addJsonHelperMiddleware(),
-    sapper.middleware({ ignore: dev ? undefined : '/editor' })
+    (req, res, next) => {
+      if (!dev && req.path.startsWith('/editor')) {
+        res.statusCode = 404;
+        req.path = '404'
+      }
+
+      return sapper.middleware({ ignore: dev ? undefined : '/editor' })(req, res, next);
+    }
   )
   .listen(PORT, err => {
     if (err) console.log('error', err);

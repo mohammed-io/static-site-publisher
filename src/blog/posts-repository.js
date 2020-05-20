@@ -1,7 +1,7 @@
 import { promises as fs, existsSync } from 'fs';
 import slugify from 'slugify';
 import path from 'path';
-import { generateNewFilePathFor } from './config';
+import { generateNewFilePathFor, rootPostsDir } from './config';
 import { compileTemplate } from './post-template';
 import { traverseDir } from '../utils/traverseDir';
 import { Maybe } from '../utils/Maybe';
@@ -16,7 +16,7 @@ export const invalidatePosts = () => (cachedPosts = null);
  */
 export const getFilesAndPosts = async () => {
   if (!cachedPosts) {
-    cachedPosts = await traverseDir('src/blog/posts').then(paths => {
+    cachedPosts = await traverseDir(rootPostsDir).then(paths => {
       return Promise.all(
         paths
           .filter(file => file.endsWith('.json'))
