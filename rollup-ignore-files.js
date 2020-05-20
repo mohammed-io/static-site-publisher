@@ -1,7 +1,7 @@
 const ignoreFiles = function({
   patterns = [],
   when = () => true,
-  asId = 'path',
+  asId = 'console',
 } = {}) {
   return {
     resolveId(id) {
