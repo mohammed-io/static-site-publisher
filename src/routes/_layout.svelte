@@ -16,17 +16,6 @@
   $: isRtl = $_('options.rtl') === 'true';
 </script>
 
-<style>
-  main {
-    position: relative;
-    max-width: 56em;
-    background-color: white;
-    padding: 2em;
-    margin: 0 auto;
-    box-sizing: border-box;
-  }
-</style>
-
 <svelte:head>
   {#if isRtl}
     <style>
@@ -39,6 +28,4 @@
 </svelte:head>
 <Nav {segment} />
 
-<main>
-  <slot />
-</main>
+<slot />
