@@ -2,12 +2,6 @@
 
 </script>
 
-<style>
-  .separator {
-    @apply border-l-2 my-1;
-  }
-</style>
-
 <svelte:head>
   <title>@MoAbdulkereem</title>
 </svelte:head>
@@ -20,19 +14,19 @@
           <a href="/">Home</a>
         </li>
         
-        <span class="separator sm:mx-3"></span>
+        <span class="border-l-2 my-1 sm:mx-3"></span>
 
         <li class="py-1 md:px-4">
           <a href="/">Projects</a>
         </li>
         
-        <span class="separator sm:mx-3"></span>
+        <span class="border-l-2 my-1 sm:mx-3"></span>
         
         <li class="py-1 md:px-4">
           <a href="/">Contact</a>
         </li>
         
-        <span class="separator sm:mx-3"></span>
+        <span class="border-l-2 my-1 sm:mx-3"></span>
         
         <li class="py-1 md:px-4">
           <a href="/">Blog</a>
