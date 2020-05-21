@@ -12,7 +12,7 @@ module.exports = {
       serif:
         "Amiri, 'Dubai', 'Merriweather', 'Georgia', 'Cambria', 'Times New Roman', 'serif'",
       mono:
-        "CascadiaMono, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+        "'Cascadia Mono', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
     },
   },
   variants: {},

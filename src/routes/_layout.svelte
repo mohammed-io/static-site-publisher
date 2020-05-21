@@ -8,7 +8,6 @@
 
 <script>
   import '../styles/tailwind.css';
-  import Nav from '../components/Nav.svelte';
   import { _ } from 'svelte-i18n';
 
   export let segment;
@@ -26,6 +25,5 @@
     </style>
   {/if}
 </svelte:head>
-<Nav {segment} />
 
-<slot />
+<slot></slot>

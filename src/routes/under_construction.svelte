@@ -17,16 +17,9 @@
     </header>
     <section class="mb-20 justify-center">
       <div class="px-2 sm:px-10 lg:px-16">
-        <div class="mb-1">
-          <h1 class="text-2xl sm:text-4xl text-black px-2 bg-white inline-block">
-            Mohammed Abdulkereem
-          </h1>
-        </div>
-        <div>
-          <h2 class="text-lg sm:text-xl text-black px-2 bg-white inline-block">
-            Software Craftsman
-          </h2>
-        </div>
+        <h2 class="text-lg sm:text-xl text-black px-2 bg-white inline-block">
+            Under construction!
+        </h2>
       </div>
     </section>
     <div class="dull"></div>
