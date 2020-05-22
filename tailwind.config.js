@@ -1,6 +1,14 @@
 const { colors } = require('tailwindcss/defaultTheme');
 
 module.exports = {
+  purge: [
+    './src/**/*.html',
+    './src/**/*.vue',
+    './src/**/*.jsx',
+    './src/**/*.svelte',
+    './__sapper__/**/*.js',
+    './__sapper__/**/*.html',
+  ],
   theme: {
     extend: {
       colors: {
